@@ -82,8 +82,36 @@ const etapes = [
   top: 0.6rem;
   bottom: 0.6rem;
   width: 2px;
-  background: linear-gradient(var(--accent), var(--lilac), var(--line));
+  background: var(--line);
   border-radius: 2px;
+}
+
+/* La ligne se remplit au fil du défilement (navigateurs compatibles) */
+.timeline::after {
+  content: '';
+  position: absolute;
+  left: 0.4rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 2px;
+  background: linear-gradient(var(--accent), var(--lilac));
+  border-radius: 2px;
+  box-shadow: 0 0 12px var(--accent);
+  transform-origin: top;
+}
+
+@supports (animation-timeline: view()) {
+  .timeline::after {
+    animation: fill-line linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 60%;
+  }
+}
+
+@keyframes fill-line {
+  from {
+    transform: scaleY(0);
+  }
 }
 
 .step {
@@ -104,12 +132,28 @@ const etapes = [
   border-radius: 50%;
   background: var(--bg);
   border: 3px solid var(--lilac);
+  z-index: 1;
+  transition: transform 0.3s var(--ease);
+}
+
+.step:hover .marker {
+  transform: scale(1.35);
 }
 
 .marker.stage {
   border-color: var(--accent);
   background: var(--accent);
   box-shadow: 0 0 0 5px var(--accent-soft);
+  animation: pulse 2.4s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 14px transparent;
+  }
 }
 
 .date {

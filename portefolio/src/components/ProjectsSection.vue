@@ -11,8 +11,8 @@
         </p>
       </div>
 
-      <ul class="grid">
-        <li v-for="p in projetsRecents" :key="p.nom" class="card">
+      <ul class="grid" data-stagger>
+        <li v-for="p in projetsRecents" :key="p.nom" v-spot="{ tilt: true }" class="card">
           <div class="cover" :style="{ '--h': p.hue }" aria-hidden="true">
             <span class="cover-word">{{ p.cover }}</span>
             <span class="cover-label">{{ p.contexte }}</span>
@@ -71,13 +71,14 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
 }
 
 .card {
+  transform-style: preserve-3d;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
   overflow: hidden;
-  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), border-color 0.35s, opacity 0.7s var(--ease);
 }
 
 .card:hover {
@@ -99,6 +100,29 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
     radial-gradient(120% 90% at 100% 0%, hsl(var(--h) 70% 82% / 0.9), transparent 60%),
     linear-gradient(135deg, hsl(var(--h) 45% 93%), hsl(calc(var(--h) + 40) 50% 88%));
   color: hsl(var(--h) 45% 24%);
+  background-size: 140% 140%;
+  background-position: 0% 0%;
+  transition: background-position 1.2s var(--ease);
+}
+
+.card:hover .cover {
+  background-position: 100% 100%;
+}
+
+/* Éclat lumineux qui traverse la couverture au survol */
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  z-index: 1;
+  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.45) 50%, transparent 60%);
+  transform: translateX(-60%);
+  transition: transform 1s var(--ease);
+  pointer-events: none;
+}
+
+.card:hover .cover::before {
+  transform: translateX(60%);
 }
 
 :root[data-theme='dark'] .cover {
@@ -128,11 +152,11 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
   font-size: clamp(2.6rem, 5vw, 3.4rem);
   line-height: 1;
   letter-spacing: -0.03em;
-  transition: transform 0.5s var(--ease);
+  transition: transform 0.6s var(--ease);
 }
 
 .card:hover .cover-word {
-  transform: translateX(-6px);
+  transform: translateX(-10px) scale(1.06);
 }
 
 .cover-label {
@@ -223,6 +247,7 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
 }
 
 .archive-item {
+  transition: padding 0.35s var(--ease), background-color 0.35s;
   display: grid;
   grid-template-columns: 112px 1fr auto;
   align-items: center;
@@ -231,12 +256,22 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
   border-bottom: 1px solid var(--line);
 }
 
+.archive-item:hover {
+  padding-inline: 0.75rem;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+
 .archive-item img {
+  transition: transform 0.5s var(--ease);
   width: 112px;
   height: 70px;
   object-fit: cover;
   border-radius: 10px;
   border: 1px solid var(--line);
+}
+
+.archive-item:hover img {
+  transform: scale(1.08) rotate(-2deg);
 }
 
 .archive-body h4 {

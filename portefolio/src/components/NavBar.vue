@@ -1,5 +1,6 @@
 <template>
   <header class="nav" :class="{ scrolled }">
+    <div class="progress" :style="{ transform: `scaleX(${progress})` }" aria-hidden="true"></div>
     <div class="container nav-inner">
       <RouterLink to="/" class="brand" aria-label="Ophélie Bellissens — accueil">
         <span class="monogram">OB</span>
@@ -50,7 +51,12 @@ function toggleTheme() {
   }
 }
 
-const onScroll = () => (scrolled.value = window.scrollY > 8)
+const progress = ref(0)
+const onScroll = () => {
+  scrolled.value = window.scrollY > 8
+  const max = document.documentElement.scrollHeight - window.innerHeight
+  progress.value = max > 0 ? window.scrollY / max : 0
+}
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
@@ -65,6 +71,18 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   z-index: 50;
   border-bottom: 1px solid transparent;
   transition: background-color 0.3s, border-color 0.3s;
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--grad);
+  transform-origin: left;
+  transform: scaleX(0);
+  box-shadow: 0 0 10px var(--accent);
 }
 
 .nav.scrolled {
@@ -102,6 +120,12 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   font-style: italic;
   font-size: 1.05rem;
   letter-spacing: -0.02em;
+  transition: transform 0.5s var(--ease), background 0.3s;
+}
+
+.brand:hover .monogram {
+  transform: rotate(-8deg) scale(1.08);
+  background: var(--grad);
 }
 
 .links {
@@ -120,9 +144,27 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   transition: color 0.2s, background-color 0.2s;
 }
 
+.links a::after {
+  content: '';
+  position: absolute;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: 0.3rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease);
+}
+
+.links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 .links a:hover {
   color: var(--ink);
-  background: var(--surface);
 }
 
 .actions {

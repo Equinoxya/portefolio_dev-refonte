@@ -1,7 +1,7 @@
 <template>
   <section id="contact" class="section" aria-labelledby="contact-title">
     <div class="container">
-      <div class="panel">
+      <div v-spot class="panel">
         <div class="left">
           <p class="eyebrow">Contact</p>
           <h2 id="contact-title" class="section-title">Travaillons <em>ensemble</em></h2>

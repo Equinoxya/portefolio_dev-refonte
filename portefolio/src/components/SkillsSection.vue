@@ -9,8 +9,8 @@
         <p class="section-intro">Du modèle de données à l'interface, avec une spécialisation en intelligence artificielle.</p>
       </div>
 
-      <div class="groups">
-        <article v-for="g in groupes" :key="g.titre" class="group">
+      <div class="groups" data-stagger>
+        <article v-for="g in groupes" :key="g.titre" v-spot class="group">
           <span class="num" aria-hidden="true">{{ g.num }}</span>
           <h3>{{ g.titre }}</h3>
           <p>{{ g.texte }}</p>
@@ -54,7 +54,8 @@ const groupes = [
 
 <style scoped>
 .band {
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+  backdrop-filter: blur(6px);
   border-block: 1px solid var(--line);
 }
 
@@ -70,19 +71,31 @@ const groupes = [
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--bg);
-  transition: border-color 0.3s, transform 0.35s var(--ease);
+  transition: border-color 0.3s, transform 0.35s var(--ease), box-shadow 0.35s, opacity 0.7s var(--ease);
 }
 
 .group:hover {
-  border-color: var(--accent);
-  transform: translateY(-4px);
+  border-color: transparent;
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
 }
 
 .num {
+  display: block;
   font-family: var(--font-display);
   font-style: italic;
-  font-size: 1rem;
-  color: var(--accent);
+  font-size: 2.6rem;
+  line-height: 1;
+  background: var(--grad);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 1s var(--ease);
+}
+
+.group:hover .num {
+  background-position: -100% 0;
 }
 
 .group h3 {
@@ -96,6 +109,10 @@ const groupes = [
   color: var(--muted);
 }
 
+.group:hover li {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+}
+
 .group ul {
   display: flex;
   flex-wrap: wrap;
@@ -104,6 +121,7 @@ const groupes = [
 }
 
 .group li {
+  transition: border-color 0.2s, color 0.2s;
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   background: var(--surface);

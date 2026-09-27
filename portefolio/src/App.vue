@@ -1,4 +1,5 @@
 <template>
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
   <a class="skip-link" href="#main">Aller au contenu</a>
   <NavBar />
   <main id="main">
