@@ -36,7 +36,7 @@ export const projetsRecents = [
     nom: 'Préface Bijoux',
     cover: 'Préface',
     hue: 340,
-    contexte: 'Site client · en ligne',
+    contexte: 'Stage · en ligne',
     description:
       "Site vitrine d'une bijouterie-atelier à Metz : intégration responsive, SEO local (JSON-LD, Open Graph), accessibilité et prise de rendez-vous en ligne.",
     tags: ['HTML', 'CSS', 'JavaScript', 'SEO local'],

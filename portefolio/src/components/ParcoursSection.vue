@@ -15,6 +15,7 @@
           <p class="date">{{ e.date }} <span class="type">· {{ e.type === 'stage' ? 'Stage' : 'Formation' }}</span></p>
           <h3>{{ e.titre }}</h3>
           <p class="org">{{ e.org }}</p>
+          <a v-if="e.lien" :href="e.lien" class="site" target="_blank" rel="noopener noreferrer">Voir le site<span class="sr-only"> (nouvel onglet)</span> ↗</a>
           <p v-if="e.description" class="desc">{{ e.description }}</p>
         </li>
       </ol>
@@ -28,7 +29,10 @@ const etapes = [
     type: 'stage',
     date: 'Sept. – oct. 2026',
     titre: 'Stage développeuse web',
-    org: 'Exocoms Group',
+    org: 'Préface Bijoux — bijouterie et atelier, Metz',
+    description:
+      "Conception et mise en ligne du site vitrine de la boutique : intégration HTML/CSS responsive, référencement local (JSON-LD, Open Graph, balises canoniques), accessibilité, intégration des avis Google, de la prise de rendez-vous en ligne et de Google Analytics. Création de la page Facebook de la boutique.",
+    lien: 'https://www.prefacebijoux.com',
   },
   {
     type: 'formation',
@@ -127,6 +131,19 @@ const etapes = [
 .org {
   margin-top: 0.2rem;
   font-weight: 600;
+}
+
+.site {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.site:hover {
+  text-decoration: underline;
 }
 
 .desc {
