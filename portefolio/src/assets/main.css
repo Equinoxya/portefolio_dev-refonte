@@ -25,6 +25,12 @@
   --glow-a: rgba(176, 80, 42, 0.22);
   --glow-b: rgba(157, 134, 214, 0.26);
   --glow-c: rgba(120, 180, 220, 0.2);
+
+  /* Logo — surimpression deux encres (voir Logo.vue) */
+  --logo-ink-o: #b0502a;
+  --logo-ink-b: #9d86d6;
+  --logo-blend: multiply;
+
   color-scheme: light;
 }
 
@@ -45,6 +51,12 @@
   --glow-a: rgba(227, 138, 95, 0.16);
   --glow-b: rgba(185, 167, 236, 0.16);
   --glow-c: rgba(90, 150, 200, 0.12);
+
+  /* Encres plus sourdes : screen éclaircit, --accent/--lilac partiraient en blanc */
+  --logo-ink-o: #c96a3c;
+  --logo-ink-b: #7b63b8;
+  --logo-blend: screen;
+
   color-scheme: dark;
 }
 

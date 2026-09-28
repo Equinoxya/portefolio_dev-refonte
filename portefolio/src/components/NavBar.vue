@@ -3,7 +3,7 @@
     <div class="progress" :style="{ transform: `scaleX(${progress})` }" aria-hidden="true"></div>
     <div class="container nav-inner">
       <RouterLink to="/" class="brand" aria-label="Ophélie Bellissens — accueil">
-        <span class="monogram">OB</span>
+        <Logo />
         <span class="brand-name">Ophélie Bellissens</span>
       </RouterLink>
 
@@ -28,6 +28,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import Icon from './Icon.vue'
+import Logo from './Logo.vue'
 
 const liens = [
   { hash: '#projets', label: 'Projets' },
@@ -108,24 +109,18 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   font-weight: 700;
 }
 
-.monogram {
-  display: grid;
-  place-items: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 12px;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.05rem;
-  letter-spacing: -0.02em;
-  transition: transform 0.5s var(--ease), background 0.3s;
+.brand :deep(.logo) {
+  transition: transform 0.5s var(--ease);
 }
 
-.brand:hover .monogram {
+.brand:hover :deep(.logo) {
   transform: rotate(-8deg) scale(1.08);
-  background: var(--grad);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand:hover :deep(.logo) {
+    transform: none;
+  }
 }
 
 .links {
