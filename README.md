@@ -52,12 +52,11 @@ cd portefolio
 npm install
 ```
 
-Créer un fichier `portefolio/.env` (non versionné) :
+Copier `portefolio/.env.example` en `portefolio/.env` (non versionné) et renseigner les
+trois valeurs depuis le tableau de bord EmailJS :
 
-```env
-VITE_EMAILJS_SERVICE_ID=votre_service_id
-VITE_EMAILJS_TEMPLATE_ID=votre_template_id
-VITE_EMAILJS_PUBLIC_KEY=votre_cle_publique
+```bash
+cp .env.example .env
 ```
 
 ## Commandes
@@ -90,8 +89,9 @@ Variables d'environnement à déclarer sur Netlify : les trois variables `VITE_E
 ## Sécurité
 
 - Formulaire de contact : validation des champs, limite de longueur, champ piège anti-robots et délai entre deux envois.
-- Le fichier `.env` n'est pas versionné.
-- L'usage des clés EmailJS est limité au domaine du portfolio dans le tableau de bord EmailJS.
+- Le fichier `.env` n'est pas versionné ; `.env.example` sert de modèle.
+- Les clés `VITE_EMAILJS_*` sont publiques par conception : Vite les intègre au bundle client, elles ne sont donc
+  pas un secret. La protection repose sur la restriction de domaine configurée dans le tableau de bord EmailJS.
 
 ## Auteure
 

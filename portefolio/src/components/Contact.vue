@@ -205,14 +205,14 @@ textarea:focus {
 
 input[aria-invalid='true'],
 textarea[aria-invalid='true'] {
-  border-color: #c2413b;
+  border-color: var(--danger);
 }
 
 .err {
   min-height: 1.2rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #c2413b;
+  color: var(--danger);
 }
 
 .hp {
@@ -238,11 +238,11 @@ textarea[aria-invalid='true'] {
 }
 
 .status.ok {
-  color: #2f8a57;
+  color: var(--success);
 }
 
 .status.ko {
-  color: #c2413b;
+  color: var(--danger);
 }
 
 .rgpd {

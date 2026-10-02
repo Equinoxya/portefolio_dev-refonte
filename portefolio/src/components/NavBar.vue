@@ -1,5 +1,5 @@
 <template>
-  <header class="nav" :class="{ scrolled }">
+  <header ref="header" class="nav" :class="{ scrolled }">
     <div class="progress" :style="{ transform: `scaleX(${progress})` }" aria-hidden="true"></div>
     <div class="container nav-inner">
       <RouterLink to="/" class="brand" aria-label="Ophélie Bellissens — accueil">
@@ -8,8 +8,22 @@
       </RouterLink>
 
       <nav id="menu" class="links" :class="{ open }" aria-label="Navigation principale">
-        <RouterLink v-for="l in liens" :key="l.hash" :to="{ path: '/', hash: l.hash }" @click="open = false">
-          {{ l.label }}
+        <!-- `custom` : RouterLink impose sinon ses propres class et aria-current -->
+        <RouterLink
+          v-for="l in liens"
+          :key="l.hash"
+          v-slot="{ href, navigate }"
+          :to="{ path: '/', hash: l.hash }"
+          custom
+        >
+          <a
+            :href="href"
+            :class="{ active: actif === l.hash }"
+            :aria-current="actif === l.hash ? 'location' : undefined"
+            @click="suivreLien($event, navigate)"
+          >
+            {{ l.label }}
+          </a>
         </RouterLink>
       </nav>
 
@@ -17,7 +31,7 @@
         <button class="icon-btn" type="button" :aria-label="dark ? 'Activer le thème clair' : 'Activer le thème sombre'" @click="toggleTheme">
           <Icon :name="dark ? 'sun' : 'moon'" />
         </button>
-        <button class="icon-btn burger" type="button" aria-controls="menu" :aria-expanded="open" :aria-label="open ? 'Fermer le menu' : 'Ouvrir le menu'" @click="open = !open">
+        <button ref="burger" class="icon-btn burger" type="button" aria-controls="menu" :aria-expanded="open" :aria-label="open ? 'Fermer le menu' : 'Ouvrir le menu'" @click="open = !open">
           <Icon :name="open ? 'close' : 'menu'" />
         </button>
       </div>
@@ -26,7 +40,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { useRoute } from 'vue-router'
 import Icon from './Icon.vue'
 import Logo from './Logo.vue'
 
@@ -37,8 +52,35 @@ const liens = [
   { hash: '#contact', label: 'Contact' },
 ]
 
+const route = useRoute()
 const open = ref(false)
 const scrolled = ref(false)
+const actif = ref('')
+const header = ref(null)
+const burger = ref(null)
+
+function fermerMenu(rendreFocus = false) {
+  if (!open.value) return
+  open.value = false
+  if (rendreFocus) burger.value?.focus()
+}
+
+// Lien de section : on referme le menu avant de laisser le routeur naviguer
+function suivreLien(e, navigate) {
+  open.value = false
+  navigate(e)
+}
+
+// Échap ferme le menu et ramène le focus sur le bouton qui l'a ouvert
+const onKeydown = (e) => {
+  if (e.key === 'Escape') fermerMenu(true)
+}
+
+// Un clic hors de l'en-tête ferme le menu
+const onPointerdown = (e) => {
+  if (!header.value?.contains(e.target)) fermerMenu()
+}
+
 const dark = ref(document.documentElement.dataset.theme === 'dark')
 
 function toggleTheme() {
@@ -53,16 +95,54 @@ function toggleTheme() {
 }
 
 const progress = ref(0)
+
+// Section courante : la dernière dont le haut est passé sous l'en-tête
+function sectionCourante() {
+  const sections = liens
+    .map((l) => [l.hash, document.getElementById(l.hash.slice(1))])
+    .filter(([, el]) => el)
+  // Hors de l'accueil il n'y a aucune section à suivre
+  if (!sections.length) return ''
+
+  // En bas de page, la dernière section est active même si elle est courte
+  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+    return sections[sections.length - 1][0]
+  }
+
+  const ligne = window.scrollY + 120
+  let trouve = ''
+  for (const [hash, el] of sections) if (el.offsetTop <= ligne) trouve = hash
+  return trouve
+}
+
 const onScroll = () => {
   scrolled.value = window.scrollY > 8
   const max = document.documentElement.scrollHeight - window.innerHeight
   progress.value = max > 0 ? window.scrollY / max : 0
+  actif.value = sectionCourante()
 }
+
+// Repasser en desktop referme le menu : son aria-expanded ne doit pas rester à true
+const large = window.matchMedia('(min-width: 821px)')
+const onLarge = (e) => e.matches && fermerMenu()
+
 onMounted(() => {
   onScroll()
   window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('keydown', onKeydown)
+  window.addEventListener('pointerdown', onPointerdown)
+  large.addEventListener('change', onLarge)
 })
-onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
+
+// Le scroll ne se déclenche pas toujours au changement de route
+watch(() => route.path, () => nextTick(onScroll))
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('pointerdown', onPointerdown)
+  large.removeEventListener('change', onLarge)
+})
 </script>
 
 <style scoped>
@@ -158,8 +238,14 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
   transform-origin: left;
 }
 
-.links a:hover {
+.links a:hover,
+.links a.active {
   color: var(--ink);
+}
+
+.links a.active::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .actions {
