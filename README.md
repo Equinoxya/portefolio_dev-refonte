@@ -7,6 +7,7 @@ Portfolio de développeuse web et IA, en formation Concepteur Développeur Inté
 ## Contenu
 
 - Présentation et liens (GitHub, LinkedIn)
+- CV en téléchargement (`public/cv-ophelie-bellissens.pdf`)
 - Projets récents avec liens vers le code source ou le site en ligne
 - Compétences : IA et données, back-end, front-end, bases de données et DevOps
 - Parcours : formations et stages

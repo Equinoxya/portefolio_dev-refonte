@@ -28,6 +28,9 @@
             <Icon name="down" />
           </RouterLink>
           <RouterLink :to="{ path: '/', hash: '#contact' }" class="btn btn-ghost">Me contacter</RouterLink>
+          <a class="btn btn-ghost" href="/cv-ophelie-bellissens.pdf" download>
+            <Icon name="download" /> Mon CV<span class="sr-only"> (PDF, 443 Ko)</span>
+          </a>
         </div>
 
         <ul class="meta rise" style="--d: 6">

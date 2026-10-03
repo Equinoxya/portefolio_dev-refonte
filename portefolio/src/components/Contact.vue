@@ -19,6 +19,11 @@
                 <Icon name="github" /> github.com/Equinoxya
               </a>
             </li>
+            <li>
+              <a href="/cv-ophelie-bellissens.pdf" download>
+                <Icon name="download" /> Télécharger mon CV<span class="sr-only"> (PDF, 443 Ko)</span>
+              </a>
+            </li>
           </ul>
         </div>
 
