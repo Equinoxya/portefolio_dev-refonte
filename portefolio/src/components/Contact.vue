@@ -21,7 +21,7 @@
             </li>
             <li>
               <a href="/cv-ophelie-bellissens.pdf" download>
-                <Icon name="download" /> Télécharger mon CV<span class="sr-only"> (PDF, 443 Ko)</span>
+                <Icon name="download" /> Télécharger mon CV<span class="sr-only"> (PDF, 333 Ko)</span>
               </a>
             </li>
           </ul>

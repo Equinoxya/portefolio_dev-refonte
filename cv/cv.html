@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Ophélie Bellissens — CV</title>
+<style>
+@font-face { font-family: 'Fraunces'; src: url('../portefolio/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2') format('woff2-variations'); font-weight: 100 900; }
+@font-face { font-family: 'Manrope'; src: url('../portefolio/node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2') format('woff2-variations'); font-weight: 200 800; }
+
+:root {
+  --ink: #1f1a17;
+  --muted: #5d544c;
+  --accent: #a84823;
+  --line: #ded3c6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+body {
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--ink);
+  font-size: 8.9pt;
+  line-height: 1.4;
+  width: 210mm; min-height: 297mm;
+  padding: 10mm 13mm 8mm;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; line-height: 1.1; letter-spacing: -0.015em; }
+
+/* ---------- En-tête ---------- */
+header { display: grid; grid-template-columns: 1fr auto; gap: 8mm; align-items: start;
+  border-bottom: 2px solid var(--ink); padding-bottom: 3.8mm; margin-bottom: 4mm; }
+h1 { font-size: 25pt; }
+.role { font-family: 'Fraunces', serif; font-style: italic; font-size: 13pt; color: #a84823; margin-top: 1.5mm; }
+.contact { text-align: right; font-size: 8.5pt; line-height: 1.75; color: var(--muted); white-space: nowrap; }
+.contact a { color: var(--muted); text-decoration: none; }
+.contact b { color: var(--ink); font-weight: 700; }
+
+/* ---------- Corps ---------- */
+.grid { display: grid; grid-template-columns: 1fr 62mm; gap: 9mm; }
+section { margin-bottom: 3.4mm; }
+h2 { font-size: 7.4pt; font-family: 'Manrope', sans-serif; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.13em; color: #a84823;
+  padding-bottom: 1.2mm; border-bottom: 1px solid var(--line); margin-bottom: 2.4mm; }
+
+.item { margin-bottom: 2.6mm; break-inside: avoid; }
+.item:last-child { margin-bottom: 0; }
+.item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
+h3 { font-size: 10.5pt; }
+.when { font-size: 7.8pt; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.org { font-size: 8.6pt; color: var(--muted); margin-bottom: 1.2mm; }
+.org a { color: var(--muted); }
+ul { list-style: none; }
+.item li { position: relative; padding-left: 3.4mm; margin-top: 0.9mm; }
+.item li::before { content: ''; position: absolute; left: 0; top: 3.4pt;
+  width: 1.3mm; height: 1.3mm; border-radius: 50%; background: #c9a089; }
+.stack { font-size: 7.9pt; color: var(--muted); margin-top: 1.4mm; font-weight: 600; }
+
+/* ---------- Colonne droite ---------- */
+.skill { margin-bottom: 3mm; }
+.skill-t { font-weight: 800; font-size: 8.4pt; margin-bottom: 0.6mm; }
+.skill-l { font-size: 8.3pt; color: var(--muted); }
+.aside li { font-size: 8.4pt; margin-bottom: 1mm; color: var(--muted); }
+.aside li b { color: var(--ink); font-weight: 700; }
+.lead { font-size: 9pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Ophélie Bellissens</h1>
+    <p class="role">Développeuse web &amp; IA</p>
+  </div>
+  <div class="contact">
+    <b>Thionville · Metz</b><br>
+    obellissens@gmail.com<br>
+    opheliebellissens.netlify.app<br>
+    github.com/Equinoxya<br>
+    linkedin.com/in/ophelie-bellissens-dev
+  </div>
+</header>
+
+<section>
+  <p class="lead">Développeuse en formation spécialisée en intelligence artificielle. Je conçois des applications web
+  en architecture multicouche et j'y intègre de l'IA là où elle apporte quelque chose : modèles de machine learning,
+  LLM exécutés en local. Illustratrice à côté, j'accorde autant d'importance au rendu qu'au code.</p>
+</section>
+
+<div class="grid">
+<main>
+
+  <section>
+    <h2>Expérience</h2>
+    <div class="item">
+      <div class="item-head"><h3>Développeuse web — stage</h3><span class="when">Sept. – oct. 2026</span></div>
+      <p class="org">Préface Bijoux — bijouterie et atelier, Metz · prefacebijoux.com</p>
+      <ul>
+        <li>Conception et mise en ligne du site vitrine, de la maquette au déploiement : intégration HTML/CSS responsive et accessibilité.</li>
+        <li>Référencement local : données structurées JSON-LD, Open Graph, balises canoniques.</li>
+        <li>Intégration des avis Google, de la prise de rendez-vous en ligne et de Google Analytics.</li>
+      </ul>
+      <p class="stack">HTML · CSS · JavaScript · SEO local</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Projets</h2>
+
+    <div class="item">
+      <div class="item-head"><h3>SentinelBot</h3><span class="when">Machine learning</span></div>
+      <ul>
+        <li>Bot de modération Twitch : un modèle de ML détecte toxicité et spam en temps réel.</li>
+        <li>Un LLM local génère ensuite le message envoyé au bannissement.</li>
+      </ul>
+      <p class="stack">Python · scikit-learn · TwitchIO · Ollama</p>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><h3>Pierre · Feuille · Ciseaux</h3><span class="when">Vision par ordinateur</span></div>
+      <ul>
+        <li>Classification d'images par transfer learning (MobileNetV2), ~94 % de précision.</li>
+        <li>Jeu en direct à la webcam avec OpenCV, interface Streamlit et visualisation Grad-CAM.</li>
+      </ul>
+      <p class="stack">TensorFlow · Keras · OpenCV · Streamlit</p>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><h3>HelpMeDraft</h3><span class="when">Projet fil rouge · 2026</span></div>
+      <ul>
+        <li>Rédaction assistée par IA de documents professionnels : éditeur Markdown, reformulation,
+        correction et complétion du texte.</li>
+        <li>Gestion des comptes et des rôles, traitement des données cadré RGPD.</li>
+      </ul>
+      <p class="stack">Vue.js · API REST · IA générative</p>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><h3>Hyrule Quest Board</h3><span class="when">Django · IA locale</span></div>
+      <ul>
+        <li>Tableau de quêtes avec statistiques calculées par l'ORM.</li>
+        <li>Chatbot 100 % local (Ollama), cadré pour ne répondre que sur un domaine donné.</li>
+      </ul>
+      <p class="stack">Python · Django · Ollama</p>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><h3>Game Recommender</h3><span class="when">ML · API REST</span></div>
+      <ul>
+        <li>Classification supervisée (arbre de décision, scikit-learn) entraînée sur des profils utilisateurs.</li>
+        <li>Pipeline complet (collecte → entraînement → prédiction), API Node.js/Express et Python/Flask, déployé sur Render et Netlify.</li>
+      </ul>
+      <p class="stack">Python · scikit-learn · Node.js · Flask</p>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><h3>Brickmarket</h3><span class="when">E-commerce</span></div>
+      <ul>
+        <li>Boutique en ligne : catalogue, fiches produit, panier et design system CSS.</li>
+        <li>Déploiement conteneurisé via Docker et GitHub Actions.</li>
+      </ul>
+      <p class="stack">Django · Python · Docker · GitHub Actions</p>
+    </div>
+
+  </section>
+</main>
+
+<aside class="aside">
+
+  <section>
+    <h2>Formation</h2>
+    <div class="item">
+      <div class="item-head"><h3 style="font-size:9.6pt">Titre RNCP Concepteur développeur intégrateur IA</h3></div>
+      <p class="org">Metz Numeric School · 2026, en cours</p>
+    </div>
+    <div class="item">
+      <div class="item-head"><h3 style="font-size:9.6pt">Titre RNCP Développeur Web</h3></div>
+      <p class="org">OpenClassrooms · 2022 – 2023</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Compétences</h2>
+    <div class="skill">
+      <p class="skill-t">IA &amp; données</p>
+      <p class="skill-l">Python, scikit-learn, TensorFlow / Keras, Pandas, OpenCV, Ollama, Streamlit</p>
+    </div>
+    <div class="skill">
+      <p class="skill-t">Back-end</p>
+      <p class="skill-l">Django, Flask, SQLAlchemy, Node.js, API REST</p>
+    </div>
+    <div class="skill">
+      <p class="skill-t">Front-end</p>
+      <p class="skill-l">Vue.js, React, TypeScript, JavaScript, HTML / CSS, Tailwind</p>
+    </div>
+    <div class="skill">
+      <p class="skill-t">Bases &amp; DevOps</p>
+      <p class="skill-l">MySQL, PostgreSQL, MongoDB, Git / GitHub, Docker, GitHub Actions</p>
+    </div>
+    <div class="skill">
+      <p class="skill-t">Transverse</p>
+      <p class="skill-l">Architecture multicouche, accessibilité, SEO, méthode Agile</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Langues</h2>
+    <ul>
+      <li><b>Français</b> — langue maternelle</li>
+      <li><b>Anglais</b> — B2, lecture technique et documentation</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Centres d'intérêt</h2>
+    <ul>
+      <li>Dessin et illustration</li>
+      <li>Culture vidéoludique</li>
+      <li>Musique</li>
+    </ul>
+  </section>
+
+</aside>
+</div>
+</body>
+</html>
