@@ -88,7 +88,9 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
   border-color: transparent;
 }
 
-/* Couverture générée : pas d'image, un dégradé teinté par projet */
+/* Couverture générée : pas d'image, un mesh de trois points teintés par projet.
+   Les teintes voisines (±30) donnent la profondeur qu'un dégradé à deux points
+   n'a pas ; le socle linéaire ferme le fond. */
 .cover {
   position: relative;
   display: flex;
@@ -98,8 +100,10 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
   padding: 1.1rem 1.3rem;
   overflow: hidden;
   background:
-    radial-gradient(120% 90% at 100% 0%, hsl(var(--h) 70% 82% / 0.9), transparent 60%),
-    linear-gradient(135deg, hsl(var(--h) 45% 93%), hsl(calc(var(--h) + 40) 50% 88%));
+    radial-gradient(68% 80% at 86% 6%, hsl(calc(var(--h) + 30) 78% 80% / 0.95), transparent 62%),
+    radial-gradient(58% 68% at 10% 26%, hsl(calc(var(--h) - 30) 65% 86% / 0.8), transparent 60%),
+    radial-gradient(95% 85% at 46% 112%, hsl(var(--h) 68% 79% / 0.85), transparent 58%),
+    linear-gradient(135deg, hsl(var(--h) 42% 93%), hsl(calc(var(--h) + 40) 48% 88%));
   color: hsl(var(--h) 45% 24%);
   background-size: 140% 140%;
   background-position: 0% 0%;
@@ -128,7 +132,10 @@ import { projetsRecents, projetsAnterieurs } from '../data/projets.js'
 
 :root[data-theme='dark'] .cover {
   background:
-    radial-gradient(120% 90% at 100% 0%, hsl(var(--h) 45% 32% / 0.9), transparent 60%),
+    /* 31 % / 25 % : au-delà, le mot de couverture passe sous 3:1 sur certaines teintes */
+    radial-gradient(68% 80% at 86% 6%, hsl(calc(var(--h) + 30) 50% 31% / 0.95), transparent 62%),
+    radial-gradient(58% 68% at 10% 26%, hsl(calc(var(--h) - 30) 42% 25% / 0.8), transparent 60%),
+    radial-gradient(95% 85% at 46% 112%, hsl(var(--h) 46% 25% / 0.85), transparent 58%),
     linear-gradient(135deg, hsl(var(--h) 25% 17%), hsl(calc(var(--h) + 40) 25% 13%));
   color: hsl(var(--h) 70% 86%);
 }

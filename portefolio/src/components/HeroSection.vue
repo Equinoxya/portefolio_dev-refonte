@@ -1,5 +1,5 @@
 <template>
-  <section class="hero" aria-labelledby="hero-title">
+  <section ref="hero" class="hero" aria-labelledby="hero-title">
     <div class="container hero-grid">
       <div class="hero-text">
         <p class="status rise" style="--d: 0">
@@ -23,7 +23,7 @@
         </p>
 
         <div class="cta rise" style="--d: 5">
-          <RouterLink :to="{ path: '/', hash: '#projets' }" class="btn btn-primary">
+          <RouterLink :to="{ path: '/', hash: '#projets' }" class="btn btn-primary magnet">
             Voir mes projets
             <Icon name="down" />
           </RouterLink>
@@ -87,14 +87,74 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import Icon from './Icon.vue'
 
 const stack = ['Python', 'Vue.js', 'Django', 'Machine Learning', 'TensorFlow', 'LLM locaux', 'React', 'PostgreSQL', 'Docker', 'Accessibilité', 'SEO']
 
+const moinsDAnimations = window.matchMedia('(prefers-reduced-motion: reduce)')
+
 // Contenu en mouvement : il doit pouvoir être arrêté (WCAG 2.2.2), au clavier comme au doigt.
 // Déjà à l'arrêt si l'utilisateur a demandé moins d'animations.
-const paused = ref(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+const paused = ref(moinsDAnimations.matches)
+
+/* ---------- Réaction au curseur (souris seulement) ----------
+   Le portrait prend de la profondeur et le bouton principal s'aimante.
+   Mouvement déclenché par l'utilisateur : rien ne bouge tout seul. */
+
+const hero = ref(null)
+let aimant = null
+let frame = 0
+
+const RAYON = 170 // distance à partir de laquelle le bouton commence à répondre
+const DECALAGE_MAX = 6 // px : au-delà, le bouton se décolle visiblement du texte
+
+const borne = (v) => Math.max(-DECALAGE_MAX, Math.min(DECALAGE_MAX, v))
+
+function suivreCurseur(e) {
+  cancelAnimationFrame(frame)
+  frame = requestAnimationFrame(() => {
+    const r = hero.value.getBoundingClientRect()
+    // Position dans le héros, ramenée entre -1 et 1
+    hero.value.style.setProperty('--px', ((e.clientX - r.left) / r.width) * 2 - 1)
+    hero.value.style.setProperty('--py', ((e.clientY - r.top) / r.height) * 2 - 1)
+
+    const b = aimant.getBoundingClientRect()
+    const dx = e.clientX - (b.left + b.width / 2)
+    const dy = e.clientY - (b.top + b.height / 2)
+    // L'attraction décroît avec la distance et s'annule au-delà du rayon.
+    // 0.14 place le sommet de la courbe juste sous le plafond : sans ça le
+    // bouton saute au maximum dès 40px et la nuance disparaît.
+    const force = Math.max(0, 1 - Math.hypot(dx, dy) / RAYON)
+    aimant.style.setProperty('--ax', `${borne(dx * force * 0.14)}px`)
+    aimant.style.setProperty('--ay', `${borne(dy * force * 0.14)}px`)
+  })
+}
+
+function relacher() {
+  cancelAnimationFrame(frame)
+  hero.value.style.setProperty('--px', 0)
+  hero.value.style.setProperty('--py', 0)
+  aimant.style.setProperty('--ax', '0px')
+  aimant.style.setProperty('--ay', '0px')
+}
+
+const souris = window.matchMedia('(hover: hover) and (pointer: fine)')
+
+onMounted(() => {
+  if (!souris.matches || moinsDAnimations.matches) return
+  aimant = hero.value.querySelector('.magnet')
+  if (!aimant) return
+  hero.value.classList.add('reactif')
+  hero.value.addEventListener('pointermove', suivreCurseur)
+  hero.value.addEventListener('pointerleave', relacher)
+})
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(frame)
+  hero.value?.removeEventListener('pointermove', suivreCurseur)
+  hero.value?.removeEventListener('pointerleave', relacher)
+})
 </script>
 
 <style scoped>
@@ -217,6 +277,17 @@ h1 {
   margin-top: 2rem;
 }
 
+/* Le bouton s'aimante vers le curseur. La transition lisse le suivi : sans elle
+   le bouton colle au pixel près et le geste paraît nerveux. */
+.reactif .magnet {
+  transform: translate(var(--ax, 0px), calc(var(--ay, 0px) + var(--lift, 0px)));
+  transition: transform 0.3s var(--ease), background-color 0.25s, color 0.25s;
+}
+
+.reactif .magnet:hover {
+  --lift: -2px;
+}
+
 .meta {
   display: flex;
   flex-wrap: wrap;
@@ -291,6 +362,18 @@ h1 {
   to {
     --angle: 360deg;
   }
+}
+
+/* Anneau et photo se décalent en sens inverse : c'est l'écart entre les deux
+   qui donne la profondeur, pas le déplacement lui-même. */
+.reactif .ring {
+  transform: translate3d(calc(var(--px, 0) * -7px), calc(var(--py, 0) * -7px), 0);
+  transition: transform 0.7s var(--ease);
+}
+
+.reactif .frame {
+  transform: translate3d(calc(var(--px, 0) * 5px), calc(var(--py, 0) * 5px), 0);
+  transition: transform 0.7s var(--ease);
 }
 
 .frame {
