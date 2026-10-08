@@ -28,7 +28,7 @@
       </nav>
 
       <div class="actions">
-        <button class="icon-btn" type="button" :aria-label="dark ? 'Activer le thème clair' : 'Activer le thème sombre'" @click="toggleTheme">
+        <button ref="themeBtn" class="icon-btn" type="button" :aria-label="dark ? 'Activer le thème clair' : 'Activer le thème sombre'" @click="toggleTheme">
           <Icon :name="dark ? 'sun' : 'moon'" />
         </button>
         <button ref="burger" class="icon-btn burger" type="button" aria-controls="menu" :aria-expanded="open" :aria-label="open ? 'Fermer le menu' : 'Ouvrir le menu'" @click="open = !open">
@@ -82,8 +82,10 @@ const onPointerdown = (e) => {
 }
 
 const dark = ref(document.documentElement.dataset.theme === 'dark')
+const themeBtn = ref(null)
+const moinsDAnimations = window.matchMedia('(prefers-reduced-motion: reduce)')
 
-function toggleTheme() {
+function appliquerTheme() {
   dark.value = !dark.value
   const theme = dark.value ? 'dark' : 'light'
   document.documentElement.dataset.theme = theme
@@ -92,6 +94,36 @@ function toggleTheme() {
   } catch {
     /* stockage indisponible : le thème reste valable pour la session */
   }
+}
+
+// Au clavier, le clic n'a pas de coordonnées : le cercle part alors du bouton
+function origine(e) {
+  if (e.detail > 0) return { x: e.clientX, y: e.clientY }
+  const r = themeBtn.value.getBoundingClientRect()
+  return { x: r.left + r.width / 2, y: r.top + r.height / 2 }
+}
+
+// Le nouveau thème se déploie en cercle depuis le bouton.
+// Sans View Transitions ou en animations réduites, on garde la bascule directe.
+function toggleTheme(e) {
+  if (!document.startViewTransition || moinsDAnimations.matches) return appliquerTheme()
+
+  const { x, y } = origine(e)
+  // Rayon nécessaire pour couvrir le coin le plus éloigné du point de départ
+  const rayon = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+
+  const racine = document.documentElement
+  racine.classList.add('theme-switch')
+  const transition = document.startViewTransition(appliquerTheme)
+
+  transition.ready.then(() => {
+    racine.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${rayon}px at ${x}px ${y}px)`] },
+      { duration: 550, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', pseudoElement: '::view-transition-new(root)' },
+    )
+  })
+
+  transition.finished.finally(() => racine.classList.remove('theme-switch'))
 }
 
 const progress = ref(0)

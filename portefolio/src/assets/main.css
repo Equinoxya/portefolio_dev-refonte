@@ -289,6 +289,35 @@ textarea {
   }
 }
 
+/* ---------- Bascule de thème : le nouveau thème se déploie en cercle ---------- */
+/* Le fondu croisé par défaut superposerait les deux thèmes en gris pendant la
+   révélation : on le coupe pour ne garder que le cercle (animé dans NavBar.vue). */
+:root.theme-switch::view-transition-old(root),
+:root.theme-switch::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+:root.theme-switch::view-transition-old(root) {
+  z-index: 1;
+}
+
+:root.theme-switch::view-transition-new(root) {
+  z-index: 2;
+}
+
+/* Le cercle est déjà la transition : la fondre en plus rendrait le bord trouble */
+:root.theme-switch body {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
 /* ---------- Appear on scroll ---------- */
 .appear {
   opacity: 0;
