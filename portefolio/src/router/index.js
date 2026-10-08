@@ -10,12 +10,19 @@ const routes = [
   },
 ]
 
+// Le routeur calcule lui-même la position : il ignore le scroll-padding-top du CSS.
+// On relit donc la même valeur pour garder une seule source de vérité (--nav-h).
+function decalageNav() {
+  const v = getComputedStyle(document.documentElement).scrollPaddingTop
+  return parseFloat(v) || 84
+}
+
 const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, saved) {
     if (saved) return saved
-    if (to.hash) return { el: to.hash, top: 72, behavior: 'smooth' }
+    if (to.hash) return { el: to.hash, top: decalageNav(), behavior: 'smooth' }
     return { top: 0 }
   },
 })

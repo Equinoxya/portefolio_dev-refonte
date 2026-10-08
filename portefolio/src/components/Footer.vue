@@ -52,8 +52,9 @@ const annee = new Date().getFullYear()
 .social a {
   display: grid;
   place-items: center;
-  width: 2.6rem;
-  height: 2.6rem;
+  /* 44px : cible tactile recommandée sur iOS et Android */
+  width: 2.75rem;
+  height: 2.75rem;
   border: 1px solid var(--line);
   border-radius: 999px;
   transition: border-color 0.2s, color 0.2s;

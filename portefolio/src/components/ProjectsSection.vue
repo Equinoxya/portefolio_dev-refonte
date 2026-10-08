@@ -13,9 +13,10 @@
 
       <ul class="grid" data-stagger>
         <li v-for="p in projetsRecents" :key="p.nom" v-spot="{ tilt: true }" class="card">
-          <div class="cover" :style="{ '--h': p.hue }" aria-hidden="true">
-            <span class="cover-word">{{ p.cover }}</span>
-            <span class="cover-label">{{ p.contexte }}</span>
+          <!-- Seul le mot géant est décoratif : le contexte est la seule place où il est écrit -->
+          <div class="cover" :style="{ '--h': p.hue }">
+            <span class="cover-word" aria-hidden="true">{{ p.cover }}</span>
+            <p class="cover-label">{{ p.contexte }}</p>
           </div>
           <div class="body">
             <h3>{{ p.nom }}</h3>

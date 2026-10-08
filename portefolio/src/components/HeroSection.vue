@@ -64,20 +64,37 @@
       </figure>
     </div>
 
-    <div class="marquee" aria-hidden="true">
-      <div class="track">
-        <template v-for="n in 2" :key="n">
-          <span v-for="t in stack" :key="t + n">{{ t }}<i>✦</i></span>
-        </template>
+    <div class="marquee">
+      <!-- Le masque de dégradé vit sur ce cadre, pas sur la piste : la piste est
+           bien plus large que l'écran, les pourcentages n'y voudraient rien dire. -->
+      <div class="viewport">
+        <div class="track" :class="{ paused }" aria-hidden="true">
+          <template v-for="n in 2" :key="n">
+            <span v-for="t in stack" :key="t + n">{{ t }}<i>✦</i></span>
+          </template>
+        </div>
       </div>
+      <button
+        class="marquee-btn"
+        type="button"
+        :aria-label="paused ? 'Reprendre le défilement des technologies' : 'Mettre en pause le défilement des technologies'"
+        @click="paused = !paused"
+      >
+        <Icon :name="paused ? 'play' : 'pause'" />
+      </button>
     </div>
   </section>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import Icon from './Icon.vue'
 
 const stack = ['Python', 'Vue.js', 'Django', 'Machine Learning', 'TensorFlow', 'LLM locaux', 'React', 'PostgreSQL', 'Docker', 'Accessibilité', 'SEO']
+
+// Contenu en mouvement : il doit pouvoir être arrêté (WCAG 2.2.2), au clavier comme au doigt.
+// Déjà à l'arrêt si l'utilisateur a demandé moins d'animations.
+const paused = ref(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 </script>
 
 <style scoped>
@@ -349,12 +366,17 @@ h1 {
 
 /* Bandeau défilant des technos */
 .marquee {
+  position: relative;
   margin-top: clamp(3rem, 7vw, 5rem);
   padding-block: 1.1rem;
   border-block: 1px solid var(--line);
+}
+
+/* Fondu plus long à droite : il dégage la place du bouton */
+.viewport {
   overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 72%, transparent 94%);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 72%, transparent 94%);
 }
 
 .track {
@@ -363,8 +385,38 @@ h1 {
   animation: scroll-x 40s linear infinite;
 }
 
-.marquee:hover .track {
+.marquee:hover .track,
+.track.paused {
   animation-play-state: paused;
+}
+
+/* Le bouton reste hors du masque de dégradé, sinon il s'efface sur les bords.
+   Le bandeau déborde du conteneur : on réaligne le bouton sur sa gouttière. */
+.marquee-btn {
+  position: absolute;
+  top: 50%;
+  right: max(1.25rem, calc((100% - var(--container)) / 2));
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  transform: translateY(-50%);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.marquee-btn:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.marquee-btn svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .track span {

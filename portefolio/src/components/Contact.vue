@@ -28,19 +28,32 @@
         </div>
 
         <form class="form" novalidate @submit.prevent="envoyer">
+          <!-- Résumé repris du clavier et annoncé : les erreurs en ligne restent en place -->
+          <div v-if="listeErreurs.length" ref="resume" class="resume" role="alert" tabindex="-1" aria-labelledby="resume-titre">
+            <p id="resume-titre" class="resume-titre">
+              <Icon name="alert" />
+              {{ listeErreurs.length }} {{ listeErreurs.length > 1 ? 'champs' : 'champ' }} à corriger
+            </p>
+            <ul>
+              <li v-for="e in listeErreurs" :key="e.champ">
+                <a :href="`#${e.champ}`" @click.prevent="allerAuChamp(e.champ)">{{ e.texte }}</a>
+              </li>
+            </ul>
+          </div>
+
           <div class="field">
             <label for="nom">Nom</label>
-            <input id="nom" v-model.trim="form.nom" type="text" name="nom" autocomplete="name" maxlength="80" required :aria-invalid="!!erreurs.nom" aria-describedby="err-nom" />
+            <input id="nom" v-model.trim="form.nom" type="text" name="nom" autocomplete="name" maxlength="80" required :aria-invalid="!!erreurs.nom" :aria-describedby="erreurs.nom ? 'err-nom' : undefined" @blur="revalider('nom')" />
             <p id="err-nom" class="err">{{ erreurs.nom }}</p>
           </div>
           <div class="field">
             <label for="email">Email</label>
-            <input id="email" v-model.trim="form.email" type="email" name="email" autocomplete="email" maxlength="120" required :aria-invalid="!!erreurs.email" aria-describedby="err-email" />
+            <input id="email" v-model.trim="form.email" type="email" name="email" autocomplete="email" maxlength="120" required :aria-invalid="!!erreurs.email" :aria-describedby="erreurs.email ? 'err-email' : undefined" @blur="revalider('email')" />
             <p id="err-email" class="err">{{ erreurs.email }}</p>
           </div>
           <div class="field">
             <label for="message">Message</label>
-            <textarea id="message" v-model.trim="form.message" name="message" rows="5" maxlength="2000" required :aria-invalid="!!erreurs.message" aria-describedby="err-message"></textarea>
+            <textarea id="message" v-model.trim="form.message" name="message" rows="5" maxlength="2000" required :aria-invalid="!!erreurs.message" :aria-describedby="erreurs.message ? 'err-message' : undefined" @blur="revalider('message')"></textarea>
             <p id="err-message" class="err">{{ erreurs.message }}</p>
           </div>
 
@@ -66,7 +79,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, nextTick, reactive, ref } from 'vue'
 import emailjs from '@emailjs/browser'
 import Icon from './Icon.vue'
 
@@ -74,15 +87,39 @@ const form = reactive({ nom: '', email: '', message: '', site: '' })
 const erreurs = reactive({ nom: '', email: '', message: '' })
 const statut = reactive({ type: '', texte: '' })
 const envoi = ref(false)
+const resume = ref(null)
+// Tant que rien n'a été soumis, quitter un champ vide ne doit pas afficher d'erreur
+const soumis = ref(false)
 let dernierEnvoi = 0
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
+const REGLES = {
+  nom: (v) => (v.length >= 2 ? '' : 'Indiquez votre nom.'),
+  email: (v) => (EMAIL_RE.test(v) ? '' : 'Adresse email invalide.'),
+  message: (v) => (v.length >= 10 ? '' : 'Votre message doit contenir au moins 10 caractères.'),
+}
+
+// Ordre fixe : le résumé doit suivre l'ordre visuel des champs
+const listeErreurs = computed(() =>
+  Object.keys(REGLES)
+    .filter((champ) => erreurs[champ])
+    .map((champ) => ({ champ, texte: erreurs[champ] })),
+)
+
 function valider() {
-  erreurs.nom = form.nom.length >= 2 ? '' : 'Indiquez votre nom.'
-  erreurs.email = EMAIL_RE.test(form.email) ? '' : 'Adresse email invalide.'
-  erreurs.message = form.message.length >= 10 ? '' : 'Votre message doit contenir au moins 10 caractères.'
-  return !erreurs.nom && !erreurs.email && !erreurs.message
+  for (const [champ, regle] of Object.entries(REGLES)) erreurs[champ] = regle(form[champ])
+  return listeErreurs.value.length === 0
+}
+
+// Correction au fil de l'eau, une fois l'utilisateur averti
+function revalider(champ) {
+  if (soumis.value) erreurs[champ] = REGLES[champ](form[champ])
+}
+
+// Le lien du résumé donne le focus au champ ; le scroll-padding évite qu'il passe sous l'en-tête
+function allerAuChamp(champ) {
+  document.getElementById(champ)?.focus()
 }
 
 async function envoyer() {
@@ -95,7 +132,13 @@ async function envoyer() {
     statut.texte = 'Merci, votre message a bien été envoyé.'
     return
   }
-  if (!valider()) return
+
+  soumis.value = true
+  if (!valider()) {
+    await nextTick()
+    resume.value?.focus()
+    return
+  }
 
   if (Date.now() - dernierEnvoi < 30_000) {
     statut.type = 'ko'
@@ -115,6 +158,8 @@ async function envoyer() {
     statut.type = 'ok'
     statut.texte = 'Merci, votre message a bien été envoyé. Je vous réponds rapidement.'
     form.nom = form.email = form.message = ''
+    // Formulaire remis à zéro : il ne doit pas se signaler en erreur tout seul
+    soumis.value = false
   } catch {
     statut.type = 'ko'
     statut.texte = "L'envoi a échoué. Réessayez ou contactez-moi via LinkedIn."
@@ -179,6 +224,47 @@ async function envoyer() {
 .field {
   display: grid;
   gap: 0.35rem;
+}
+
+.resume {
+  margin-bottom: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 1.5px solid var(--danger);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--danger) 8%, var(--bg));
+}
+
+.resume-titre {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--danger);
+}
+
+.resume-titre svg {
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.resume ul {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  padding-left: 1.75rem;
+  list-style: disc;
+}
+
+.resume a {
+  font-size: 0.925rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.resume a:hover {
+  color: var(--danger);
 }
 
 label {

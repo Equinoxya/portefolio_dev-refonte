@@ -41,6 +41,9 @@ const icons = {
   pin: { paths: ['M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z', 'M12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z'] },
   download: { paths: ['M12 3v12', 'm7 11 5 5 5-5', 'M4 20h16'] },
   code: { paths: ['m8 8-4 4 4 4', 'm16 8 4 4-4 4', 'm13.5 5-3 14'] },
+  pause: { fill: true, paths: ['M9 4.5h-2a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-13a1 1 0 0 0-1-1Z', 'M17 4.5h-2a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-13a1 1 0 0 0-1-1Z'] },
+  alert: { paths: ['M12 8v5', 'M12 16.5h.01', 'M12 3 2.5 20h19L12 3Z'] },
+  play: { fill: true, paths: ['M8 5.14a1 1 0 0 1 1.52-.85l10 6.86a1 1 0 0 1 0 1.7l-10 6.86A1 1 0 0 1 8 18.86V5.14Z'] },
 }
 
 const icon = computed(() => icons[props.name])

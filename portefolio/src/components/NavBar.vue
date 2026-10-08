@@ -178,7 +178,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  height: 4.25rem;
+  height: var(--nav-h);
 }
 
 .brand {
@@ -256,8 +256,9 @@ onBeforeUnmount(() => {
 .icon-btn {
   display: grid;
   place-items: center;
-  width: 2.6rem;
-  height: 2.6rem;
+  /* 44px : cible tactile recommandée sur iOS et Android */
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--surface);
