@@ -75,7 +75,7 @@ export const projetsAnterieurs = [
   },
   {
     nom: 'Equipouet',
-    description: "Portfolio d'illustratrice.",
+    description: "Portfolio d'illustration : galerie, tarifs de commission et version bilingue.",
     tags: ['HTML', 'CSS', 'JavaScript'],
     image: '/images/Equipouet.webp',
     site: 'https://equinoxya.github.io/SitePortfolio/',
