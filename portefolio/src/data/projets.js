@@ -78,7 +78,7 @@ export const projetsAnterieurs = [
     description: "Portfolio d'illustratrice.",
     tags: ['HTML', 'CSS', 'JavaScript'],
     image: '/images/Equipouet.webp',
-    site: 'https://equipouet.netlify.app/',
+    site: 'https://equinoxya.github.io/SitePortfolio/',
   },
   {
     nom: 'Nina Carducci',
