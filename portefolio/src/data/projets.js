@@ -40,6 +40,7 @@ export const projetsRecents = [
     description:
       "Optimisation de la boutique en ligne d'une bijoutière créatrice : sections Liquid responsives sur mesure, audit SEO de 247 pages et 952 images, automatisation Shopify Flow du sitemap et déblocage du catalogue sur Google Shopping.",
     tags: ['Shopify', 'Liquid', 'SEO technique', 'JSON-LD'],
+    site: 'https://lesinseparables.net',
   },
   {
     nom: 'Préface Bijoux',
