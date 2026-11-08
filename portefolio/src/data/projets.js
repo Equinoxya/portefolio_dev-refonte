@@ -33,6 +33,15 @@ export const projetsRecents = [
     repo: `${GH}/Sent_iNel_Bot_simulate`,
   },
   {
+    nom: 'Les Inséparables',
+    cover: 'Shopify',
+    hue: 95,
+    contexte: 'Stage · Shopify',
+    description:
+      "Optimisation de la boutique en ligne d'une bijoutière créatrice : sections Liquid responsives sur mesure, audit SEO de 247 pages et 952 images, automatisation Shopify Flow du sitemap et déblocage du catalogue sur Google Shopping.",
+    tags: ['Shopify', 'Liquid', 'SEO technique', 'JSON-LD'],
+  },
+  {
     nom: 'Préface Bijoux',
     cover: 'Préface',
     hue: 340,

@@ -27,6 +27,14 @@
 const etapes = [
   {
     type: 'stage',
+    date: 'Oct. – nov. 2026',
+    titre: 'Stage développeuse web',
+    org: 'Les Inséparables — bijouterie artisanale, Metz',
+    description:
+      "Optimisation de la boutique Shopify (environ 360 produits) : quatre sections Liquid sur mesure avec contenu distinct par taille d'écran, fil d'Ariane balisé en JSON-LD, audit SEO de 247 pages et 952 images, mise en place de la Search Console, automatisation Shopify Flow pour retirer du sitemap les URL générées par la personnalisation produit, correction des erreurs bloquant le catalogue sur Google Merchant Center et documentation de passation.",
+  },
+  {
+    type: 'stage',
     date: 'Sept. – oct. 2026',
     titre: 'Stage développeuse web',
     org: 'Préface Bijoux — bijouterie et atelier, Metz',
