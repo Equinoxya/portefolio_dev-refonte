@@ -29,18 +29,9 @@ const etapes = [
     type: 'stage',
     date: 'Sept. – oct. 2026',
     titre: 'Stage développeuse web',
-    org: 'Les Inséparables — bijouterie artisanale, Metz',
-    description:
-      "Optimisation de la boutique Shopify (environ 360 produits) : quatre sections Liquid sur mesure avec contenu distinct par taille d'écran, fil d'Ariane balisé en JSON-LD, audit SEO de 247 pages et 952 images, mise en place de la Search Console, automatisation Shopify Flow pour retirer du sitemap les URL générées par la personnalisation produit, correction des erreurs bloquant le catalogue sur Google Merchant Center et documentation de passation.",
-    lien: 'https://lesinseparables.net',
-  },
-  {
-    type: 'stage',
-    date: 'Sept. – oct. 2026',
-    titre: 'Stage développeuse web',
     org: 'Préface Bijoux — bijouterie et atelier, Metz',
     description:
-      "Conception et mise en ligne du site vitrine de la boutique : intégration HTML/CSS responsive, référencement local (JSON-LD, Open Graph, balises canoniques), accessibilité, intégration des avis Google, de la prise de rendez-vous en ligne et de Google Analytics. Création de la page Facebook de la boutique.",
+      "Deux missions pour la même bijouterie. Site vitrine : intégration HTML/CSS responsive, référencement local (JSON-LD, Open Graph, balises canoniques), accessibilité, avis Google, prise de rendez-vous en ligne, Google Analytics et création de la page Facebook. Boutique en ligne Les Inséparables (Shopify, environ 360 produits) : quatre sections Liquid sur mesure avec contenu distinct par taille d'écran, fil d'Ariane balisé en JSON-LD, audit SEO de 247 pages et 952 images, mise en place de la Search Console, automatisation Shopify Flow pour retirer du sitemap les URL générées par la personnalisation produit, correction des erreurs bloquant le catalogue sur Google Merchant Center et documentation de passation.",
     lien: 'https://www.prefacebijoux.com',
   },
   {
