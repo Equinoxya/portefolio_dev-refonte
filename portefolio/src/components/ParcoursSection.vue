@@ -27,7 +27,7 @@
 const etapes = [
   {
     type: 'stage',
-    date: 'Oct. – nov. 2026',
+    date: 'Sept. – oct. 2026',
     titre: 'Stage développeuse web',
     org: 'Les Inséparables — bijouterie artisanale, Metz',
     description:
