@@ -3,6 +3,16 @@ const GH = 'https://github.com/Equinoxya'
 // Projets récents mis en avant. `hue` sert à générer la couverture (pas d'image à charger).
 export const projetsRecents = [
   {
+    nom: 'Agent IA Vidéo',
+    cover: 'Agent',
+    hue: 180,
+    contexte: 'IA agentique · 100 % local',
+    description:
+      "Agent qui fabrique mes vidéos dev pour TikTok : un LLM local écrit et relit le script en scènes, puis l'agent enchaîne voix clonée, timing mot par mot, personnage 2D animé, sous-titres et montage final.",
+    tags: ['Python', 'Ollama', 'faster-whisper', 'FFmpeg'],
+    repo: `${GH}/agent-video`,
+  },
+  {
     nom: 'HelpMeDraft',
     cover: 'Draft',
     hue: 18,
